@@ -3,18 +3,6 @@ input <- readr::read_lines(
 ) |>
   stringr::str_split("", simplify = TRUE)
 
-# input <- c(
-#   "89010123",
-#   "78121874",
-#   "87430965",
-#   "96549874",
-#   "45678903",
-#   "32019012",
-#   "01329801",
-#   "10456732"
-# ) |> 
-#   stringr::str_split("", simplify = TRUE)
-
 trail_heads <- which(input == 0, arr.ind = TRUE) |> 
   as.data.frame() |> 
   dplyr::arrange(row, col)
@@ -102,7 +90,13 @@ all_counts <- purrr::map_df(
   }
 )
 
+# Part 1
 all_counts |>
   dplyr::filter(!is.na(row)) |> 
   dplyr::distinct() |> 
+  nrow()
+
+# Part 2
+all_counts |>
+  dplyr::filter(!is.na(row)) |> 
   nrow()
