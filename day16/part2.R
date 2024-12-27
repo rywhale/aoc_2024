@@ -1,7 +1,6 @@
 #### Inputs ####
 input <- readr::read_csv(
   "day18/input_test.txt",
-  # "day18/input.txt",
   col_names = c("col", "row")
 ) |> 
   dplyr::mutate(
@@ -55,10 +54,8 @@ find_neighbours <- function(input, coord) {
 #### Get Nodes ####
 board <- matrix(
   ".",
-  # nrow = 71,
-  # ncol = 71
-  nrow = 7,
-  ncol = 7
+  nrow = 71,
+  ncol = 71
 )
 
 all_coords <- tidyr::expand_grid(
@@ -108,8 +105,7 @@ purrr::walk(
       graph_conn |> 
       igraph::shortest_paths(
         from = "1,1",
-        # to = "71,71"
-        to = "7,7"
+        to = "71,71"
       )
     )
     
