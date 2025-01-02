@@ -1,36 +1,21 @@
 #### Inputs ####
 input <- readr::read_lines(
-"day24/input.txt"
-# "day24/test_input.txt"
+  "day24/input.txt"
 )
 
-# input <- c(
-#   "x00: 1",
-#   "x01: 1",
-#   "x02: 1",
-#   "y00: 0",
-#   "y01: 1",
-#   "y02: 0",
-#   "",
-#   "x00 AND y00 -> z00",
-#   "x01 XOR y01 -> z01",
-#   "x02 OR y02 -> z02"
-# )
-
 #### Utils ####
-out_da_bin <- function(bin_nums){
-  
+out_da_bin <- function(bin_nums) {
   pow <- length(bin_nums) - 1
   pos <- 1
-  
+
   out <- 0
-  
-  while(pos <= length(bin_nums)){
-    out <- out + bin_nums[[pos]] * 2 ^ pow
+
+  while (pos <= length(bin_nums)) {
+    out <- out + bin_nums[[pos]] * 2^pow
     pow <- pow - 1
     pos <- pos + 1
   }
-  
+
   out
 }
 
@@ -64,24 +49,18 @@ remaining_ins <- ins_df
 current_row <- 1
 
 while (nrow(remaining_ins)) {
-  if(current_row > nrow(remaining_ins)){
+  if (current_row > nrow(remaining_ins)) {
     current_row <- 1
   }
-  
+
   current_ins <- remaining_ins[current_row, ]
-  
-  # print("----INS----")
-  # print(current_ins)
-  # 
-  # print("---Vals----")
-  # print(init_vals)
-  
+
   can_compute <- all(c(current_ins$wire_1, current_ins$wire_2) %in% init_vals$wire)
-  
+
   if (can_compute) {
     wire_1_val <- init_vals$value[init_vals$wire == current_ins$wire_1]
     wire_2_val <- init_vals$value[init_vals$wire == current_ins$wire_2]
-    
+
     calc_value <- compute_the_number(
       wire_1_val,
       wire_2_val,
@@ -95,7 +74,7 @@ while (nrow(remaining_ins)) {
         wire = current_ins$results,
         value = calc_value
       )
-  }else{
+  } else {
     current_row <- current_row + 1
   }
 }
@@ -103,9 +82,8 @@ while (nrow(remaining_ins)) {
 init_vals |>
   dplyr::filter(
     stringr::str_detect(wire, "^z[0-9]+")
-  ) |> 
-  dplyr::arrange(wire) |> 
-  dplyr::pull(value) |> 
-  rev() |> 
+  ) |>
+  dplyr::arrange(wire) |>
+  dplyr::pull(value) |>
+  rev() |>
   out_da_bin()
-  
